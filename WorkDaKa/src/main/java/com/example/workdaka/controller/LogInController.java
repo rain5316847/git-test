@@ -24,7 +24,7 @@ public class LogInController {
 
     @PostMapping("/login")
     public R longin(@RequestBody ThisUser thisUser){
-        log.info("thisUser是：",thisUser);
+        log.info("thisUser是:{}",thisUser);
         return iUserService.login(thisUser);
     }
 
