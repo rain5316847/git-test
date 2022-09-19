@@ -5,11 +5,13 @@ import com.example.workdaka.entity.ThisUser;
 import com.example.workdaka.mapper.UserMapper;
 import com.example.workdaka.service.IUserService;
 import com.example.workdaka.utils.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/Login")
 public class LogInController {
@@ -22,7 +24,7 @@ public class LogInController {
 
     @PostMapping("/login")
     public R longin(@RequestBody ThisUser thisUser){
-        System.out.println("thisUser是："+thisUser);
+        log.info("thisUser是：",thisUser);
         return iUserService.login(thisUser);
     }
 
