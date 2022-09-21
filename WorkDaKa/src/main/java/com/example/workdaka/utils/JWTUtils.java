@@ -74,4 +74,8 @@ public class JWTUtils {
         return key;
     }
 
+    public static void main(String[] args) {
+
+    }
+
 }

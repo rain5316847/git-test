@@ -202,7 +202,24 @@
             </exclusions>
         </dependency>
 
+        <!--HttpClient，实现java代码访问其他程序接口-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- 加上这段代码,没有的话会打不出来包 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+    </build>
 
 
 </project>
