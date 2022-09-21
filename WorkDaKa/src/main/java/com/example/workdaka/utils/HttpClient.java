@@ -12,8 +12,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 @Slf4j
 public class HttpClient {
@@ -35,7 +33,7 @@ public class HttpClient {
 
         // 创建Get请求
         HttpGet httpGet = new HttpGet("https://opss.568yun.cn/getProductInfoByInnerCode?area=&code=" + url);
-        log.info("httpGet:{}",httpGet.toString());
+        log.info("httpGet:{}",httpGet);
         // 响应模型
         CloseableHttpResponse response = null;
         String msg = null;

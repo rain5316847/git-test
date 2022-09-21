@@ -26,17 +26,17 @@ public class QRCodeServiceImpl implements IQRCodeService {
         //网址第一次解码之后的信息
         String decode = null;
         //截取”code=“之后的内容
-        String interceptURL = null;
+        String interceptURL;
         //将”%25“替换为”%“
-        String replacement = null;
+        String replacement;
         //二次解码之后的信息
         String secDecode = null;
         //产品编号，可做生成二维码用
-        String goodsNo = null;
+        String goodsNo;
         //访问蜀云查询该产品信息的网址
-        String interfaceMsg = null;
+        String interfaceMsg;
 
-        if(url == null || url == ""){
+        if(url == null || ("").equals(url)){
             return r.error("请输入二维码识别之后的网址信息。");
         }
         try {
