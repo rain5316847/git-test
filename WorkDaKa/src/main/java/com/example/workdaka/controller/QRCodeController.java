@@ -19,6 +19,7 @@ public class QRCodeController {
         log.info("url:{}",url);
         return  iqrCodeService.QueryMsgWithQRCode(url);
     }*/
+    //设备2git提交测试
 
     @PostMapping("/QueryMsgWithQRCode")
     public R QueryMsgWithQRCode(@RequestBody String url){
