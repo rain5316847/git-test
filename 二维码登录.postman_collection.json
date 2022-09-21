@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "6b61b76f-8b16-4cc3-89bc-b89fa329fe1b",
+		"name": "二维码登录",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18894183"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"llt1\",\r\n    \"pwd\":\"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/Login/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"Login",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
