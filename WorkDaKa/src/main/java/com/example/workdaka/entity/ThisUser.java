@@ -16,7 +16,6 @@ import java.util.Date;
 @TableName("this_user")
 public class ThisUser {
 
-    @TableId("id")
     private String id;
 
     private String name;

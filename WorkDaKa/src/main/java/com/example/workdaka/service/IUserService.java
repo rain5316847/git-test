@@ -9,5 +9,8 @@ import java.util.List;
 public interface IUserService extends IService<ThisUser> {
 
     R login(ThisUser thisUser);
+
     List<ThisUser> all(String name);
+
+    ThisUser getUser(String userId);
 }
