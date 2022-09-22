@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 //配置全局捕获异常，@RestControllerAdvice会将该类运用到所有@RequestMapping中。
-@RestControllerAdvice
+// @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Exception.class)
