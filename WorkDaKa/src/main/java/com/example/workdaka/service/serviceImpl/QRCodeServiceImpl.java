@@ -55,7 +55,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        goodsNo = StringUtils.substringAfterLast(secDecode,"/B/");
+        goodsNo = (StringUtils.substringAfterLast(secDecode,"/aax5.cn/")).substring(2);
         log.info("GoodsNo:{}",goodsNo);
         interfaceMsg = HttpClient.queryMsgWithQRCode(secDecode);
         log.info("interfaceMsg:{}",interfaceMsg);
