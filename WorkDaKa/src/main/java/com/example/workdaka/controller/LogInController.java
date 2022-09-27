@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.workdaka.annotation.LoginToken;
 import com.example.workdaka.entity.ThisUser;
 import com.example.workdaka.mapper.UserMapper;
+import com.example.workdaka.service.IHttpService;
 import com.example.workdaka.service.IUserService;
 import com.example.workdaka.utils.R;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -25,9 +28,14 @@ public class LogInController {
     @Autowired
     private IUserService iUserService;
 
+    @Autowired
+    private IHttpService iHttpService;
+
     @PostMapping("/login")
-    public R longin(@RequestBody ThisUser thisUser){
+    public R longin(@RequestBody ThisUser thisUser,HttpServletRequest httpServletRequest) throws IOException {
         log.info("thisUser是:{}",thisUser);
+        // log.info("httpRequest是:{}",httpServletRequest);
+        iHttpService.getRequestMsg(httpServletRequest);
         return iUserService.login(thisUser);
     }
 
