@@ -48,4 +48,9 @@ public class LogInController {
         return userId;
     }
 
+    @GetMapping("/hello")
+    public String HelloWorld(){
+        return "HelloWorld";
+    }
+
 }
