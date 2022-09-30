@@ -13,6 +13,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
+//实现代码访问外部网站
 @Slf4j
 public class HttpClient {
 

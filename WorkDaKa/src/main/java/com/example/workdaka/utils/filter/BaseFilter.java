@@ -28,12 +28,7 @@ public class BaseFilter implements Filter {
         //获取请求中的流转换为字符串，将取出来的字符串，再次转换成流，然后把它放入到新request对象中。
         //在chain.doFiler方法中传递新的request对象
         //最后加载到过滤器链路中
-//        if(multiReadHttpServletRequestWrapper == null) {
-//            filterChain.doFilter(httpServletRequest, httpServletResponse);
-//        } else {
-//            filterChain.doFilter(httpServletRequest, httpServletResponse);
-//        }
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(multiReadHttpServletRequestWrapper, servletResponse);
     }
 
     public void destroy(){
