@@ -2,7 +2,9 @@ package com.example.workdaka.service.serviceImpl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.workdaka.entity.ThisQueryUrl;
 import com.example.workdaka.service.IQRCodeService;
+import com.example.workdaka.service.IThisQueryUrlService;
 import com.example.workdaka.utils.HttpClient;
 import com.example.workdaka.utils.R;
 import com.google.zxing.*;
@@ -15,6 +17,7 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -30,9 +33,12 @@ import java.util.Map;
 @Service
 public class QRCodeServiceImpl implements IQRCodeService {
 
+    @Autowired
+    private IThisQueryUrlService iThisQueryUrlService;
+
     @Override
     //该方法适用于微信或钉钉等电脑软件右键识别图片的二维码，再根据识别出来的网页链接解析产品信息。
-    public R QueryMsgWithQRCode(String url) {
+    public R queryMsgWithQRCode(String url) throws UnsupportedEncodingException {
 
         R r = R.of();
 
@@ -43,11 +49,13 @@ public class QRCodeServiceImpl implements IQRCodeService {
         //将”%25“替换为”%“
         String replacement;
         //二次解码之后的信息
-        String secDecode = null;
+        String secDecode;
         //产品编号，可做生成二维码用
         String goodsNo;
         //访问蜀云查询该产品信息的网址
-        String interfaceMsg;
+        String interfaceMsg = null;
+        //本次查询是否成功
+        int success = 1;
 
         if(url == null || ("").equals(url)){
             return r.error("请输入二维码识别之后的网址信息。");
@@ -63,15 +71,19 @@ public class QRCodeServiceImpl implements IQRCodeService {
         log.info("interceptURL:{}",interceptURL);
         replacement = interceptURL.replaceAll("%25","%");
         log.info("replacement:{}",replacement);
-        try {
-            secDecode = java.net.URLDecoder.decode(replacement, "UTF-8");
-            log.info("secDecode:{}",secDecode);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        secDecode = java.net.URLDecoder.decode(replacement, "UTF-8");
+        log.info("secDecode:{}",secDecode);
         goodsNo = (StringUtils.substringAfterLast(secDecode,"/aax5.cn/")).substring(2);
-        log.info("GoodsNo:{}",goodsNo);
-        interfaceMsg = HttpClient.queryMsgWithQRCode(secDecode);
+        log.info("goodsNo:{}",goodsNo);
+
+        try{
+            interfaceMsg = HttpClient.queryMsgWithQRCode(secDecode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = 2;
+            iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,1,r.toString(),success));
+        }
+
         log.info("interfaceMsg:{}",interfaceMsg);
         JSONObject jsonMsg = JSONObject.parseObject(interfaceMsg);
 
@@ -79,20 +91,34 @@ public class QRCodeServiceImpl implements IQRCodeService {
         r.put("该产品二维码为",goodsNo);
         r.put("该产品信息为",jsonMsg);
 
+        iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,1,r.toString(),success));
+
         return r;
     }
 
     @Override
     //该方法适用于本服务自行调用的产品信息查询，传入的内容不带网址信息，只有产品编码。
-    public R QueryMsgWithoutQRCode(String decode) {
+    public R queryMsgWithoutQRCode(String decode) {
+
         R r = R.of();
         //产品编号，可做生成二维码用
         String goodsNo;
         //访问蜀云查询该产品信息的网址
-        String interfaceMsg;
+        String interfaceMsg = null;
+        //本次查询是否成功
+        int success = 1;
+
         goodsNo = (StringUtils.substringAfterLast(decode,"/AAX5.CN/")).substring(2);
         log.info("GoodsNo:{}",goodsNo);
-        interfaceMsg = HttpClient.queryMsgWithQRCode(decode);
+
+        try{
+            interfaceMsg = HttpClient.queryMsgWithQRCode(decode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = 2;
+            iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(decode,2,r.toString(),success));
+        }
+
         log.info("interfaceMsg:{}",interfaceMsg);
         JSONObject jsonMsg = JSONObject.parseObject(interfaceMsg);
 
@@ -100,11 +126,21 @@ public class QRCodeServiceImpl implements IQRCodeService {
         r.put("该产品二维码为",goodsNo);
         r.put("该产品信息为",jsonMsg);
 
+        iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(decode,2,r.toString(),success));
+
         return r;
     }
 
     @Override
-    public R IdentifyQRCode(String url) throws IOException, NotFoundException {
+    //该方法为通过微信等识别的二维码结果查询网址，省去了手动复制并放到网页的过程。
+    public R identifyQRCode(String url) throws IOException, NotFoundException {
+
+        R r = R.of();
+        //本次查询是否成功
+        int success = 1;
+
+        com.google.zxing.Result result = null;
+
         File file = new File(URLDecoder.decode(url,"utf-8"));
         MultiFormatReader formatReader = new MultiFormatReader();
         //读取指定的二维码文件
@@ -113,19 +149,38 @@ public class QRCodeServiceImpl implements IQRCodeService {
         //定义二维码参数
         Map hints= new HashMap<>();
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-        com.google.zxing.Result result = formatReader.decode(binaryBitmap, hints);
+        result = formatReader.decode(binaryBitmap, hints);
+        /*try {
+            result = formatReader.decode(binaryBitmap, hints);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            success = 2;
+            iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,3,r.toString(),success));
+        }*/
+
         //输出相关的二维码信息
         log.info("解析结果:{}",result.toString());
         log.info("二维码格式类型:{}",result.getBarcodeFormat());
         log.info("二维码文本内容:{}",result.getText());
         bufferedImage.flush();
+
         //返回信息
-        R r = this.QueryMsgWithoutQRCode(result.toString());
+        try{
+            r = this.queryMsgWithoutQRCode(result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = 2;
+            iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,3,r.toString(),success));
+        }
+
+        iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,3,r.toString(),success));
+
         return r;
     }
 
     @Override
-    public BufferedImage GenerateQRCode(String msg) {
+    //生成二维码
+    public BufferedImage generateQRCode(String msg) {
         int width = 250; // 图像宽度
         int height = 250; // 图像高度
         Map<EncodeHintType, Object> hints = new HashMap<>();
@@ -137,7 +192,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
         hints.put(EncodeHintType.MARGIN, 1);
         //构建比特矩阵
         BitMatrix bitMatrix;
-        BufferedImage bufferedImage = null;
+        BufferedImage bufferedImage;
         try {
             //形成比特矩阵。参数：信息，条形码格式（二维码），宽度，高度，编码参数（UTF-8编码，纠错等级高，矩阵）
             bitMatrix = new MultiFormatWriter().encode(msg, BarcodeFormat.QR_CODE, width, height, hints);

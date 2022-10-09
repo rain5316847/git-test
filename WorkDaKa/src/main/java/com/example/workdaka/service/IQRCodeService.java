@@ -5,15 +5,16 @@ import com.google.zxing.NotFoundException;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public interface IQRCodeService {
 
-    R QueryMsgWithQRCode(String url);
+    R queryMsgWithQRCode(String url) throws UnsupportedEncodingException;
 
-    R QueryMsgWithoutQRCode(String decode);
+    R queryMsgWithoutQRCode(String decode);
 
-    R IdentifyQRCode(String url) throws IOException, NotFoundException;
+    R identifyQRCode(String url) throws IOException, NotFoundException;
 
-    BufferedImage GenerateQRCode(String msg);
+    BufferedImage generateQRCode(String msg);
 
 }
