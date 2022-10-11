@@ -2,7 +2,7 @@ package com.example.workdaka.utils;
 
 import java.util.concurrent.*;
 
-/*
+/**
 * java执行任务会创建新的线程，执行完之后会销毁线程，频繁的执行销毁会影响服务器性能，创建线程池重复利用已有的线程，加快程序运行，减少服务器消耗。
 * 该线程池用于解决根据二维码、网址、解析内容查询产品信息的并发问题。
 */

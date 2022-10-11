@@ -67,3 +67,15 @@ class Task2 implements Callable<Integer> {
 
 }
 
+class Test2{
+
+    public static void main(String[] args) {
+        Test2 test2 = new Test2();
+        test2.TestOne("");
+    }
+
+    public void TestOne(String s){
+        System.out.println(s.trim());
+    }
+}
+

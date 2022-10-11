@@ -1,8 +1,8 @@
 package com.example.workdaka.controller;
 
 import com.example.workdaka.service.IQRCodeService;
+import com.example.workdaka.utils.Common.EmptyUtils;
 import com.example.workdaka.utils.R;
-import com.example.workdaka.utils.ThreadPoolUtil;
 import com.google.zxing.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ public class QRCodeController {
     */
     @PostMapping("/queryMsgWithQRCode")
     public R queryMsgWithQRCode(@RequestBody String url) throws UnsupportedEncodingException {
+        EmptyUtils.strEmpty(url,"传入网址信息不能为空！");
         log.info("url:{}",url);
         return  iqrCodeService.queryMsgWithQRCode(url);
     }
