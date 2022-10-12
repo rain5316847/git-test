@@ -10,10 +10,10 @@ import com.example.workdaka.service.IUserService;
 import com.example.workdaka.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,9 +33,14 @@ public class LogInController {
 
     @PostMapping("/login")
     public R longin(@RequestBody ThisUser thisUser,HttpServletRequest httpServletRequest) throws IOException {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("thisUser是:{}",thisUser);
-        // log.info("httpRequest是:{}",httpServletRequest);
         iHttpService.getRequestMsg(httpServletRequest);
+        stopWatch.stop();
+        log.info("=========={}方法请求时间是：{}============",
+                "iHttpService.getRequestMsg(httpServletRequest)",
+                stopWatch.getTotalTimeSeconds());
         return iUserService.login(thisUser);
     }
 

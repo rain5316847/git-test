@@ -28,7 +28,7 @@ public class HttpServiceImpl extends ServiceImpl<HttpMapper, ThisHttp> implement
              params = line;
         }
 
-        log.info("---------------httpRequest是:{}--------------",httpServletRequest);
+        //log.info("---------------httpRequest是:{}--------------",httpServletRequest);
 
         String ServerName = httpServletRequest.getServerName();//返回服务器的主机名
         int ServerPort = httpServletRequest.getServerPort();//返回服务器的端口号
