@@ -2,7 +2,7 @@ package com.example.workdaka.service.serviceImpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.workdaka.entity.ThisHttp;
-import com.example.workdaka.mapper.HttpMapper;
+import com.example.workdaka.mapper.local.HttpMapper;
 import com.example.workdaka.service.IHttpService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;

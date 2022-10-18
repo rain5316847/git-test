@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.workdaka.annotation.LoginToken;
 import com.example.workdaka.entity.ThisUser;
-import com.example.workdaka.mapper.UserMapper;
+import com.example.workdaka.mapper.local.UserMapper;
 import com.example.workdaka.service.IHttpService;
 import com.example.workdaka.service.IUserService;
 import com.example.workdaka.utils.R;

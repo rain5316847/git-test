@@ -1,6 +1,7 @@
 package com.example.workdaka;
 
 import com.example.workdaka.service.IQRCodeService;
+import com.example.workdaka.service.ITestService;
 import com.example.workdaka.service.IUserService;
 import com.example.workdaka.utils.R;
 import com.example.workdaka.utils.ThreadPoolUtil;
@@ -18,6 +19,14 @@ class WorkDaKaApplicationTests {
 
     @Autowired
     private IQRCodeService iqrCodeService;
+
+    @Autowired
+    private ITestService iTestService;
+
+    @Test
+    void testAll(){
+        System.out.println(iTestService.showAllTest());
+    }
 
 //iqrCodeService.queryMsgWithoutQRCode("HTTP://AAX5.CN/B/HYL23EOPGEJ8K2ZZ061YV")
 @Test

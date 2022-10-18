@@ -2,7 +2,7 @@ package com.example.workdaka.service.serviceImpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.workdaka.entity.ThisQueryUrl;
-import com.example.workdaka.mapper.ThisQueryUrlMapper;
+import com.example.workdaka.mapper.local.ThisQueryUrlMapper;
 import com.example.workdaka.service.IThisQueryUrlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

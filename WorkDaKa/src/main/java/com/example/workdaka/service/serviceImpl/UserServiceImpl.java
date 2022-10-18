@@ -2,15 +2,13 @@ package com.example.workdaka.service.serviceImpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.workdaka.annotation.LoginToken;
 import com.example.workdaka.entity.ThisUser;
-import com.example.workdaka.mapper.UserMapper;
+import com.example.workdaka.mapper.local.UserMapper;
 import com.example.workdaka.service.IUserService;
 import com.example.workdaka.utils.R;
 import com.example.workdaka.utils.token.TokenUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
