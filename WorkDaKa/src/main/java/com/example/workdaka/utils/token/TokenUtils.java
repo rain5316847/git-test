@@ -2,7 +2,7 @@ package com.example.workdaka.utils.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.workdaka.entity.ThisUser;
+import com.example.workdaka.entity.local.ThisUser;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;

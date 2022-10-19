@@ -1,6 +1,6 @@
 package com.example.workdaka.controller;
 
-import com.example.workdaka.service.IQRCodeService;
+import com.example.workdaka.service.local.IQRCodeService;
 import com.example.workdaka.utils.Common.EmptyUtils;
 import com.example.workdaka.utils.R;
 import com.google.zxing.NotFoundException;

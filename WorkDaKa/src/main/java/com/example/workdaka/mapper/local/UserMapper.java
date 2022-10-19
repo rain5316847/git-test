@@ -1,7 +1,7 @@
 package com.example.workdaka.mapper.local;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.workdaka.entity.ThisUser;
+import com.example.workdaka.entity.local.ThisUser;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
