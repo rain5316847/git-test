@@ -44,9 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, ThisUser> implement
     }
 
     @Override
-    public List<ThisUser> all(String name) {
+    public List<ThisUser> all() {
         QueryWrapper<ThisUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name",name);
+        //queryWrapper.eq("name",name);
         List<ThisUser> list = baseMapper.selectList(queryWrapper);
         return list;
     }

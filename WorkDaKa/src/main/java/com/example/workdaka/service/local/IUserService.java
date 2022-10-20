@@ -10,7 +10,7 @@ public interface IUserService extends IService<ThisUser> {
 
     R login(ThisUser thisUser);
 
-    List<ThisUser> all(String name);
+    List<ThisUser> all();
 
     ThisUser getUser(String userId);
 }

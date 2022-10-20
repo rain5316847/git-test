@@ -1,5 +1,8 @@
 package com.example.workdaka;
 
+import com.example.workdaka.mapper.local.UserMapper;
+import com.example.workdaka.mapper.sichuan.TPackingListMapper;
+import com.example.workdaka.mapper.sichuan.TProductMapper;
 import com.example.workdaka.service.local.IQRCodeService;
 import com.example.workdaka.service.local.ITestService;
 import com.example.workdaka.service.local.IUserService;
@@ -23,9 +26,38 @@ class WorkDaKaApplicationTests {
     @Autowired
     private ITPackingInfoService itPackingInfoService;
 
+    @Autowired
+    private TPackingListMapper tPackingListMapper;
+
+    @Autowired
+    private TProductMapper tProductMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Test
     void test1(){
         System.out.println(itPackingInfoService.getPackingInfo("A0CXW6YS283"));
+    }
+
+    @Test
+    void test2(){
+        System.out.println(tPackingListMapper.queryCapMsg("2GML557HSY",""));
+    }
+
+    @Test
+    void test3(){
+        System.out.println(iUserService.all());
+    }
+
+    @Test
+    void test4(){
+        System.out.println(tProductMapper.getOneTProduct("184507140"));
+    }
+
+    @Test
+    void test6(){
+        System.out.println(userMapper.getMsg("3"));
     }
 
 }
