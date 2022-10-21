@@ -1,4 +1,4 @@
-package com.example.workdaka.utils.Common;
+package com.example.workdaka.utils.common;
 
 public class CharUtils {
 

@@ -12,11 +12,8 @@ public class ITPackingInfoServiceImpl extends ServiceImpl<TPackingInfoMapper, TP
 
     @Override
     //根据箱码查询箱子本身信息
-    public R getPackingInfo(String code) {
-        R r = R.of();
-        TPackingInfo tPackingInfo = baseMapper.getPackingInfo(code);
-        r.put("result",tPackingInfo);
-        return r;
+    public TPackingInfo getPackingInfo(String code) {
+        return baseMapper.getPackingInfo(code);
     }
 
     @Override

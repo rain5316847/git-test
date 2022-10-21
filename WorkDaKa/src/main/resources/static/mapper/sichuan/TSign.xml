@@ -32,4 +32,17 @@
         <result column="address" property="address" />
     </resultMap>
 
+    <select id="queryProductSign" resultType="HashMap" statementType="PREPARED">
+        SELECT
+            *
+        FROM
+            t_sign
+                JOIN t_sign_detail ON t_sign.order_no = t_sign_detail.order_no
+        WHERE
+            MATCH ( epcs ) AGAINST #{packingCode}
+          AND FIND_IN_SET( #{packingCode}, epcs )
+        ORDER BY
+            t_sign.gmt_create ASC;
+    </select>
+
 </mapper>

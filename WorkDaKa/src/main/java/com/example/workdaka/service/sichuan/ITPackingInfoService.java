@@ -6,7 +6,7 @@ import com.example.workdaka.utils.R;
 
 public interface ITPackingInfoService extends IService<TPackingInfo> {
 
-    R getPackingInfo (String code);
+    TPackingInfo getPackingInfo (String code);
 
     R getPackingSign(String code);
 

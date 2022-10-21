@@ -2,7 +2,7 @@ package com.example.workdaka.controller.local;
 
 import com.example.workdaka.entity.local.QueryQRCode;
 import com.example.workdaka.service.local.IQRCodeService;
-import com.example.workdaka.utils.Common.EmptyUtils;
+import com.example.workdaka.utils.common.EmptyUtils;
 import com.example.workdaka.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

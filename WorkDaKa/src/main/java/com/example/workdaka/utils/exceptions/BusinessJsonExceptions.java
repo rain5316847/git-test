@@ -1,4 +1,4 @@
-package com.example.workdaka.exceptions;
+package com.example.workdaka.utils.exceptions;
 
 /**
  * 业务json类异常

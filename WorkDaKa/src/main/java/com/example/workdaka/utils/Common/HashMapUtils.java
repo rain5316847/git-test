@@ -1,4 +1,4 @@
-package com.example.workdaka.utils.Common;
+package com.example.workdaka.utils.common;
 
 import java.util.Map;
 import java.util.Set;

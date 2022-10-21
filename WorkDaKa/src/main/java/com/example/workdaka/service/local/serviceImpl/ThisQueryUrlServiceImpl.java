@@ -23,7 +23,7 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
     private IThisQueryProductInfoService iThisQueryProductInfoService;
 
     @Override
-    public void insertUrlAndInfo(Map<String,Object> data, QueryQRCode queryQRCode) {
+    public String insertUrlAndInfo(Map<String,Object> data, QueryQRCode queryQRCode) {
         String urlId = UUIDUtil.createUUId();
         String product = queryQRCode.getProduct();
         ThisQueryProductInfo thisQueryProductInfo = new ThisQueryProductInfo();
@@ -71,6 +71,7 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
 
         iThisQueryProductInfoService.insertThisQueryProductInfo(thisQueryProductInfo);
         baseMapper.insert(thisQueryUrl);
+        return urlId;
     }
 
 }

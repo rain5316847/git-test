@@ -3,10 +3,8 @@ package com.example.workdaka.service.local.serviceImpl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.workdaka.entity.local.QueryQRCode;
-import com.example.workdaka.entity.local.ThisQueryUrl;
 import com.example.workdaka.service.local.IQRCodeService;
 import com.example.workdaka.service.local.IThisQueryUrlService;
-import com.example.workdaka.utils.Common.EmptyUtils;
 import com.example.workdaka.utils.HttpClient;
 import com.example.workdaka.utils.R;
 import com.google.zxing.*;
@@ -77,7 +75,8 @@ public class QRCodeServiceImpl implements IQRCodeService {
             }
             r.put("data",data);
         }
-        iThisQueryUrlService.insertUrlAndInfo(r.getData(),queryQRCode);
+        String urlId = iThisQueryUrlService.insertUrlAndInfo(r.getData(),queryQRCode);
+        r.put("urlId",urlId);
         return r;
     }
 

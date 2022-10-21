@@ -9,6 +9,6 @@ import java.util.Map;
 
 public interface IThisQueryUrlService extends IService<ThisQueryUrl> {
 
-    void insertUrlAndInfo(Map<String,Object> data, QueryQRCode queryQRCode);
+    String insertUrlAndInfo(Map<String,Object> data, QueryQRCode queryQRCode);
 
 }
