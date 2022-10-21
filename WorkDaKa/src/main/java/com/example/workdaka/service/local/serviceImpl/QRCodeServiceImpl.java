@@ -2,9 +2,11 @@ package com.example.workdaka.service.local.serviceImpl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.workdaka.entity.local.QueryQRCode;
 import com.example.workdaka.entity.local.ThisQueryUrl;
 import com.example.workdaka.service.local.IQRCodeService;
 import com.example.workdaka.service.local.IThisQueryUrlService;
+import com.example.workdaka.utils.Common.EmptyUtils;
 import com.example.workdaka.utils.HttpClient;
 import com.example.workdaka.utils.R;
 import com.google.zxing.*;
@@ -35,6 +37,125 @@ public class QRCodeServiceImpl implements IQRCodeService {
 
     @Autowired
     private IThisQueryUrlService iThisQueryUrlService;
+
+    /**
+    * 根据二维码信息查询产品信息
+    *@param queryQRCode 传入的产品类型（1 箱码；2 瓶码；）；传入查询类型（1：网址查询；2：解析内容查询；3：二维码查询；）
+    *@return 返回产品信息
+    * */
+    @Override
+    public R queryMsgWithQRCode(QueryQRCode queryQRCode) {
+
+        R r = R.of();
+        Map<String, String> map = new HashMap<>();
+        JSONObject data = new JSONObject();
+
+        if(queryQRCode.getProduct().equals("1")){
+            if(queryQRCode.getType().equals("1")) {
+                try {
+                    map = this.resolveWithURL(queryQRCode.getCode());
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            r.put("该二维码解析的内容为", map.get("该二维码解析的内容为"));
+            r.put("该产品二维码为",map.get("该产品二维码为"));
+        }
+        else if(queryQRCode.getProduct().equals("2")){
+            if(queryQRCode.getType().equals("1")) {
+                try {
+                    map = this.resolveWithURL(queryQRCode.getCode());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                String code = map.get("该二维码解析的内容为");
+                data = this.parseJSON(this.queryInfoWithCode(code));
+                r.put("该二维码解析的内容为",map.get("该二维码解析的内容为"));
+            }
+            else if(queryQRCode.getType().equals("2")) {
+                data = this.parseJSON(this.queryInfoWithCode(queryQRCode.getCode()));
+            }
+            r.put("data",data);
+        }
+        iThisQueryUrlService.insertUrlAndInfo(r.getData(),queryQRCode);
+        return r;
+    }
+
+    /**
+     * 根据网址解码查询解析结果
+     * @param URL 根据电脑微信等右键识别二维码查询出来的网页地址
+     * @return 返回二次解码之后的信息（手机“扫一扫pro识别的信息格式”）和箱码编号（可作为箱码查询使用）
+     * */
+    @Override
+    public Map<String, String> resolveWithURL(String URL) throws UnsupportedEncodingException {
+
+        Map<String,String> result = new HashMap<>();
+
+        //网址第一次解码之后的信息
+        String decode = null;
+        //截取”code=“之后的内容
+        String interceptURL;
+        //将”%25“替换为”%“
+        String replacement;
+        //二次解码之后的信息，可做生成二维码用
+        String secDecode;
+        //产品编号
+        String goodsNo;
+
+        try {
+            decode = java.net.URLDecoder.decode(URL, "UTF-8");
+            log.info("decode:{}",decode);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        interceptURL = (StringUtils.substringAfterLast(decode, "code="));
+        log.info("interceptURL:{}",interceptURL);
+        replacement = interceptURL.replaceAll("%25","%");
+        log.info("replacement:{}",replacement);
+        secDecode = java.net.URLDecoder.decode(replacement, "UTF-8");
+        log.info("secDecode:{}",secDecode);
+        goodsNo = (StringUtils.substringAfterLast(secDecode,"/aax5.cn/")).substring(2);
+        log.info("goodsNo:{}",goodsNo);
+
+        result.put("该二维码解析的内容为",secDecode);
+        result.put("该产品二维码为",goodsNo);
+        return result;
+    }
+
+    /**
+    * 根据“该二维码解析的内容”通过蜀云接口查询产品信息
+    * @param code 二次解码之后的内容
+    * @return 返回从蜀云接口查到的信息
+    * */
+    @Override
+    public JSONObject queryInfoWithCode(String code) {
+        //访问蜀云查询该产品信息的网址
+        String interfaceMsg = HttpClient.queryMsgWithQRCode(code);
+        log.info("interfaceMsg:{}",interfaceMsg);
+        JSONObject jsonMsg = JSONObject.parseObject(interfaceMsg);
+        return jsonMsg;
+    }
+
+    /**
+    * 解析蜀云接口传过来的json数据
+    * @param json 蜀云接口查询的瓶盖json数据
+    * @return 返回一个解析过的JSONObject格式的纯瓶盖json数据
+    * */
+    @Override
+    public JSONObject parseJSON(JSONObject json) {
+
+        String outerDataStr = json.getString("data");
+        //log.info("================outerData:{}==================",outerDataStr);
+        JSONObject outerData = JSONObject.parseObject(outerDataStr);
+
+        String innerDataStr = outerData.getString("data");
+        //log.info("================innerDataStr:{}==================",innerDataStr);
+        JSONObject innerData = JSONObject.parseObject(innerDataStr);
+
+        return innerData;
+    }
+
+
 
     @Override
     //该方法适用于微信或钉钉等电脑软件右键识别图片的二维码，再根据识别出来的网页链接解析产品信息。
@@ -81,17 +202,16 @@ public class QRCodeServiceImpl implements IQRCodeService {
         } catch (Exception e) {
             e.printStackTrace();
             success = 2;
-            iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,1,r.toString(),success));
+           // iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,1,r.toString(),success));
         }
 
         log.info("interfaceMsg:{}",interfaceMsg);
-        JSONObject jsonMsg = JSONObject.parseObject(interfaceMsg);
-
+        JSONObject capMsg = this.parseJSON(JSONObject.parseObject(interfaceMsg));
         r.put("该二维码解析的内容为",secDecode);
         r.put("该产品二维码为",goodsNo);
-        r.put("该产品信息为",jsonMsg);
+        r.put("该产品信息为",capMsg);
 
-        iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,1,r.toString(),success));
+        //iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,1,r.toString(),success));
 
         return r;
     }
@@ -116,7 +236,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
         } catch (Exception e) {
             e.printStackTrace();
             success = 2;
-            iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(decode,2,r.toString(),success));
+           // iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(decode,2,r.toString(),success));
         }
 
         log.info("interfaceMsg:{}",interfaceMsg);
@@ -126,7 +246,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
         r.put("该产品二维码为",goodsNo);
         r.put("该产品信息为",jsonMsg);
 
-        iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(decode,2,r.toString(),success));
+       // iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(decode,2,r.toString(),success));
 
         return r;
     }
@@ -163,10 +283,10 @@ public class QRCodeServiceImpl implements IQRCodeService {
         } catch (Exception e) {
             e.printStackTrace();
             success = 2;
-            iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,3,r.toString(),success));
+          //  iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,3,r.toString(),success));
         }
 
-        iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,3,r.toString(),success));
+      //  iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,3,r.toString(),success));
 
         return r;
     }
@@ -198,53 +318,6 @@ public class QRCodeServiceImpl implements IQRCodeService {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    /*根据网址解码查询解析结果,返回“该二维码解析的内容”和“该产品码”*/
-    public Map<String,String> resolveWithURL(String URL) throws UnsupportedEncodingException {
-
-        Map<String,String> result = new HashMap<>();
-
-        //网址第一次解码之后的信息
-        String decode = null;
-        //截取”code=“之后的内容
-        String interceptURL;
-        //将”%25“替换为”%“
-        String replacement;
-        //二次解码之后的信息，可做生成二维码用
-        String secDecode;
-        //产品编号
-        String goodsNo;
-
-        try {
-            decode = java.net.URLDecoder.decode(URL, "UTF-8");
-            log.info("decode:{}",decode);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        interceptURL = (StringUtils.substringAfterLast(decode, "code="));
-        log.info("interceptURL:{}",interceptURL);
-        replacement = interceptURL.replaceAll("%25","%");
-        log.info("replacement:{}",replacement);
-        secDecode = java.net.URLDecoder.decode(replacement, "UTF-8");
-        log.info("secDecode:{}",secDecode);
-        goodsNo = (StringUtils.substringAfterLast(secDecode,"/aax5.cn/")).substring(2);
-        log.info("goodsNo:{}",goodsNo);
-
-        result.put("该二维码解析的内容为",secDecode);
-        result.put("该产品二维码为",goodsNo);
-        return null;
-    }
-
-    @Override
-    /*根据“该二维码解析的内容”通过蜀云接口查询产品信息*/
-    public JSONObject queryInfoWithCode(String code) {
-        //访问蜀云查询该产品信息的网址
-        String interfaceMsg = HttpClient.queryMsgWithQRCode(code);
-        log.info("interfaceMsg:{}",interfaceMsg);
-        JSONObject jsonMsg = JSONObject.parseObject(interfaceMsg);
-        return jsonMsg;
     }
 
 }

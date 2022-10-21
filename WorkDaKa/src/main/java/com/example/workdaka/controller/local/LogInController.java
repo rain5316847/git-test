@@ -1,4 +1,4 @@
-package com.example.workdaka.controller;
+package com.example.workdaka.controller.local;
 
 import com.auth0.jwt.JWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

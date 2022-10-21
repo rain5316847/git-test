@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.UnsupportedEncodingException;
+
 @SpringBootTest
 class WorkDaKaApplicationTests {
 
@@ -58,6 +60,11 @@ class WorkDaKaApplicationTests {
     @Test
     void test6(){
         System.out.println(userMapper.getMsg("3"));
+    }
+
+    @Test
+    void test7() throws UnsupportedEncodingException {
+        System.out.println(iqrCodeService.queryMsgWithQRCode("https://ty-gateway-common-inter.aax5.cn/wechat/web/gps?account=xhpj_wx00007f560e6313be&redirect_uri=https%3A%2F%2Fty-gateway-access-router.aax5.cn%2Fmss%2Fgps%2FcallbackNext%3Fcode%3Dhttp%253A%252F%252Faax5.cn%252FB%252FDF6S7H9BU4OXD080VO8M1"));
     }
 
 }

@@ -27,7 +27,7 @@ public class MultiReadHttpServletRequestWrapper extends HttpServletRequestWrappe
                 String line;
                 //读取缓冲区的全部内容
                 while ((line = bufferedReader.readLine()) != null) {
-                    log.info("line:{}",line);
+                    // log.info("line:{}",line);
                     body.append(line);
                 }
         } catch(Exception e) {

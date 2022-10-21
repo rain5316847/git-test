@@ -1,6 +1,7 @@
 package com.example.workdaka.service.local;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.workdaka.entity.local.QueryQRCode;
 import com.example.workdaka.utils.R;
 import com.google.zxing.NotFoundException;
 
@@ -11,6 +12,14 @@ import java.util.Map;
 
 public interface IQRCodeService {
 
+    R queryMsgWithQRCode(QueryQRCode queryQRCode);
+
+    Map<String,String> resolveWithURL(String URL) throws UnsupportedEncodingException;
+
+    JSONObject queryInfoWithCode(String code);
+
+    JSONObject parseJSON(JSONObject json);
+
     R queryMsgWithQRCode(String url) throws UnsupportedEncodingException;
 
     R queryMsgWithoutQRCode(String decode);
@@ -18,9 +27,5 @@ public interface IQRCodeService {
     R identifyQRCode(String url) throws IOException, NotFoundException;
 
     BufferedImage generateQRCode(String msg);
-
-    Map<String,String> resolveWithURL(String URL) throws UnsupportedEncodingException;
-
-    JSONObject queryInfoWithCode(String code);
 
 }

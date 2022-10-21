@@ -1,19 +1,75 @@
 package com.example.workdaka.service.local.serviceImpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.workdaka.entity.local.QueryQRCode;
+import com.example.workdaka.entity.local.ThisQueryProductInfo;
 import com.example.workdaka.entity.local.ThisQueryUrl;
 import com.example.workdaka.mapper.local.ThisQueryUrlMapper;
+import com.example.workdaka.service.local.IThisQueryProductInfoService;
 import com.example.workdaka.service.local.IThisQueryUrlService;
+import com.example.workdaka.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Slf4j
 @Service
 public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, ThisQueryUrl> implements IThisQueryUrlService {
 
+    @Autowired
+    private IThisQueryProductInfoService iThisQueryProductInfoService;
+
     @Override
-    public void insertQueryUrl(ThisQueryUrl thisQueryUrl) {
-        log.info("thisQueryUrl:{}",thisQueryUrl);
+    public void insertUrlAndInfo(Map<String,Object> data, QueryQRCode queryQRCode) {
+        String urlId = UUIDUtil.createUUId();
+        String product = queryQRCode.getProduct();
+        ThisQueryProductInfo thisQueryProductInfo = new ThisQueryProductInfo();
+        ThisQueryUrl thisQueryUrl = ThisQueryUrl.create(
+                urlId,
+                queryQRCode.getCode(),
+                queryQRCode.getType(),
+                product,
+                data.toString()
+        );
+        /*
+        * 箱码的查询只有一种情况，只进行unicode解码。
+        * 瓶码的查询有两种情况，1：查询出来瓶码数据；2：未查询出来瓶码的数据（null）。
+        * */
+        if(product.equals("1")){
+            thisQueryProductInfo = ThisQueryProductInfo.create(
+                    urlId,
+                    product,
+                    (String) data.get("该产品二维码为")
+            );
+        }else if(product.equals("2") && data.get("data") != null){
+
+            String dataInner = data.get("data").toString();
+            JSONObject jsonInner = JSONObject.parseObject(dataInner);
+            String dmCode = jsonInner.getString("dmCode");
+            String productCode = jsonInner.getString("productCode");
+            String productName = jsonInner.getString("productName");
+
+            thisQueryProductInfo = ThisQueryProductInfo.create(
+                    urlId,
+                    product,
+                    dmCode,
+                    productCode,
+                    productName
+            );
+        }else if(product.equals("2") && data.get("data") == null){
+            thisQueryProductInfo = ThisQueryProductInfo.create(
+                    urlId,
+                    product,
+                    null,
+                    null,
+                    null
+            );
+        };
+
+        iThisQueryProductInfoService.insertThisQueryProductInfo(thisQueryProductInfo);
         baseMapper.insert(thisQueryUrl);
     }
 

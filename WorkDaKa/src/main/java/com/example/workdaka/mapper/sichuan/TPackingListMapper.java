@@ -13,9 +13,4 @@ public interface TPackingListMapper extends BaseMapper<TPackingList> {
 
     HashMap<String,Object> queryCapMsg(@Param("dmCode") String dmCode, @Param("productCode") String productCode);
 
-    List<HashMap<String,Object>> getOneList(@Param("code") String code);
-
-    List<HashMap<String,Object>> getMsgWithCode(@Param("code") String code);
-
-
 }

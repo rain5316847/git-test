@@ -22,24 +22,4 @@
           AND pi.product_id = tp.id;
     </select>
 
-    <select id="getOneList" resultType="HashMap" statementType="PREPARED">
-        SELECT
-            *
-        FROM
-            t_packing_info b,
-            t_packing_list c
-        WHERE
-            b.id = c.packing_info_id
-          AND c.`code` = #{code};
-    </select>
-
-    <select id="getMsgWithCode" resultType="HashMap" statementType="PREPARED">
-        SELECT
-            *
-        FROM
-            t_packing_list c
-        WHERE
-            c.`code` = #{code};
-    </select>
-
 </mapper>

@@ -59,9 +59,9 @@ public class HttpClient {
 
             // 从响应模型中获取响应实体
             HttpEntity responseEntity = response.getEntity();
-            log.info("响应状态为:{}",response.getStatusLine());
+            //log.info("响应状态为:{}",response.getStatusLine());
             if (responseEntity != null) {
-                log.info("响应内容长度为:{}",responseEntity.getContentLength());
+                //log.info("响应内容长度为:{}",responseEntity.getContentLength());
                 // log.info("响应内容为:{}", EntityUtils.toString(responseEntity));
             }
             msg = EntityUtils.toString(responseEntity);
