@@ -30,28 +30,87 @@ public class ITPackingListServiceImpl extends ServiceImpl<TPackingListMapper, TP
     @Autowired
     private ITCapScanService itCapScanService;
 
+    /**
+    * 根据瓶盖二维码查询信息
+    * */
     @Override
     public R getCapMsg(String urlId) {
 
         R r = R.of();
+        ThisQueryProductInfo thisQueryProductInfo;
+        String dmCode = null;
+        String QRCode = null;
+        Map<String,Object> tCapScanAndDetail;
+        TPackingList tPackingList;
+        String packingId = null;
+        TPackingInfo tPackingInfo;
+        String packingCode = null;
+        List<HashMap<String, Object>> packingSign;
 
-        ThisQueryProductInfo thisQueryProductInfo = queryURLMsg(urlId);
-        String dmCode = thisQueryProductInfo.getDmCode();
-        String QRCode = thisQueryProductInfo.getQRCode();
-
-        TPackingList tPackingList = getOneTPackingList(dmCode);
-        String packingInfoId = tPackingList.getPackingInfoId();
-        TPackingInfo tPackingInfo = getPackingInfoWithId(packingInfoId);
-        String packingCode = tPackingInfo.getEpc();
-        List<HashMap<String, Object>> packingSign = getPackingSign(packingCode);
-        Map<String,Object> tCapScanAndDetail = getCapScan(QRCode);
-
-        r.put("thisQueryProductInfo",thisQueryProductInfo);
-        r.put("tPackingList",tPackingList);
-        r.put("tPackingInfo",tPackingInfo);
-        r.put("tCapScanAndDetail",tCapScanAndDetail);
-        r.put("packingSign",packingSign);
-
+        try {
+            thisQueryProductInfo = queryURLMsg(urlId);
+            dmCode = thisQueryProductInfo.getDmCode();
+            QRCode = thisQueryProductInfo.getQRCode();
+            r.put("thisQueryProductInfo",thisQueryProductInfo);
+        }catch (Exception e){
+            if(e instanceof NullPointerException){
+                r.error("数据不存在");
+            }
+            else {
+                r.error();
+                throw e;
+            }
+        }
+        try {
+            tCapScanAndDetail = getCapScan(QRCode);
+            r.put("tCapScanAndDetail",tCapScanAndDetail);
+        }catch (Exception e){
+            if(e instanceof NullPointerException){
+                r.error("数据不存在");
+            }
+            else {
+                r.error();
+                throw e;
+            }
+        }
+        try {
+            tPackingList = getOneTPackingList(dmCode);
+            packingId = tPackingList.getPackingInfoId();
+            r.put("tPackingList",tPackingList);
+        }catch (Exception e){
+            if(e instanceof NullPointerException){
+                r.error("数据不存在");
+            }
+            else {
+                r.error();
+                throw e;
+            }
+        }
+        try {
+            tPackingInfo = getPackingInfoWithId(packingId);
+            packingCode = tPackingInfo.getEpc();
+            r.put("tPackingInfo",tPackingInfo);
+        }catch (Exception e){
+            if(e instanceof NullPointerException){
+                r.error("数据不存在");
+            }
+            else {
+                r.error();
+                throw e;
+            }
+        }
+        try {
+            packingSign = getPackingSign(packingCode);
+            r.put("packingSign",packingSign);
+        }catch (Exception e){
+            if(e instanceof NullPointerException){
+                r.error("数据不存在");
+            }
+            else {
+                r.error();
+                throw e;
+            }
+        }
         return r;
     }
 

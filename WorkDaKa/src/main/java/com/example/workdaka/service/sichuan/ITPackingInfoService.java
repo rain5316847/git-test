@@ -1,13 +1,20 @@
 package com.example.workdaka.service.sichuan;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.workdaka.entity.local.ThisQueryProductInfo;
 import com.example.workdaka.entity.sichuan.TPackingInfo;
+import com.example.workdaka.utils.R;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface ITPackingInfoService extends IService<TPackingInfo> {
+
+    R getPackingInfoMsg(String urlId);
+
+    List<HashMap<String,Object>> getPackingListWithPackingId(String packingId);
+
+    ThisQueryProductInfo queryURLMsg(String urlId);
 
     TPackingInfo getPackingInfo (String code);
 
