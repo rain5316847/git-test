@@ -12,4 +12,7 @@ public interface TPackingInfoMapper extends BaseMapper<TPackingInfo> {
     @Select("SELECT * FROM t_packing_info WHERE epc = #{code};")
     TPackingInfo getPackingInfo(@Param("code") String code);
 
+    @Select("SELECT * FROM t_packing_info WHERE id = #{id}")
+    TPackingInfo getPackingInfoWithId(@Param("id") String id);
+
 }

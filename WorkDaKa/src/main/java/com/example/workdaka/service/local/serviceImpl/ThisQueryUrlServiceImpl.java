@@ -48,6 +48,7 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
 
             String dataInner = data.get("data").toString();
             JSONObject jsonInner = JSONObject.parseObject(dataInner);
+            String QRCode = (String) data.get("该产品二维码为");
             String dmCode = jsonInner.getString("dmCode");
             String productCode = jsonInner.getString("productCode");
             String productName = jsonInner.getString("productName");
@@ -55,6 +56,7 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
             thisQueryProductInfo = ThisQueryProductInfo.create(
                     urlId,
                     product,
+                    QRCode,
                     dmCode,
                     productCode,
                     productName
@@ -63,6 +65,7 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
             thisQueryProductInfo = ThisQueryProductInfo.create(
                     urlId,
                     product,
+                    null,
                     null,
                     null,
                     null

@@ -1,8 +1,10 @@
 package com.example.workdaka;
 
 import com.example.workdaka.mapper.local.UserMapper;
+import com.example.workdaka.mapper.sichuan.TCapScanMapper;
 import com.example.workdaka.mapper.sichuan.TPackingListMapper;
 import com.example.workdaka.mapper.sichuan.TProductMapper;
+import com.example.workdaka.mapper.sichuan.TSignMapper;
 import com.example.workdaka.service.local.IQRCodeService;
 import com.example.workdaka.service.local.ITestService;
 import com.example.workdaka.service.local.IUserService;
@@ -37,6 +39,12 @@ class WorkDaKaApplicationTests {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private TCapScanMapper tCapScanMapper;
+
+    @Autowired
+    private TSignMapper tSignMapper;
+
     @Test
     void test1(){
         System.out.println(itPackingInfoService.getPackingInfo("A0CXW6YS283"));
@@ -67,5 +75,11 @@ class WorkDaKaApplicationTests {
         System.out.println(iqrCodeService.queryMsgWithQRCode("https://ty-gateway-common-inter.aax5.cn/wechat/web/gps?account=xhpj_wx00007f560e6313be&redirect_uri=https%3A%2F%2Fty-gateway-access-router.aax5.cn%2Fmss%2Fgps%2FcallbackNext%3Fcode%3Dhttp%253A%252F%252Faax5.cn%252FB%252FDF6S7H9BU4OXD080VO8M1"));
     }
 
+    @Test
+    void test8() {tCapScanMapper.queryCapScan("2GML557HSY");}
+
+    @Test
+    void test9(){
+        System.out.println(tSignMapper.getPackingSign("F2VMATYX*FA3P2-.O*+6D"));}
 }
 

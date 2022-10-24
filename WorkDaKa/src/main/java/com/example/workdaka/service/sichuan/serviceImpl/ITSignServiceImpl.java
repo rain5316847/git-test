@@ -7,6 +7,7 @@ import com.example.workdaka.service.sichuan.ITSignService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -14,8 +15,8 @@ public class ITSignServiceImpl extends ServiceImpl<TSignMapper, TSign> implement
 
 
     @Override
-    public Map<String, Object> queryProductSign(String packingCode) {
-        Map<String, Object> packingSign = baseMapper.queryProductSign(packingCode);
+    public List<HashMap<String, Object>> getPackingSign(String QRCode) {
+        List<HashMap<String, Object>> packingSign = baseMapper.getPackingSign(QRCode);
         return packingSign;
     }
 

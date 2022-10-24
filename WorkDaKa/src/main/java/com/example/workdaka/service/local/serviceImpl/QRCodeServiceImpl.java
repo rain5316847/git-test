@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,9 +56,12 @@ public class QRCodeServiceImpl implements IQRCodeService {
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
+                r.put("该二维码解析的内容为", map.get("该二维码解析的内容为"));
+                r.put("该产品二维码为",map.get("该产品二维码为"));
             }
-            r.put("该二维码解析的内容为", map.get("该二维码解析的内容为"));
-            r.put("该产品二维码为",map.get("该产品二维码为"));
+            if(queryQRCode.getType().equals("2")) {
+                r.put("该产品二维码为",this.interceptURl(queryQRCode.getCode()));
+            }
         }
         else if(queryQRCode.getProduct().equals("2")){
             if(queryQRCode.getType().equals("1")) {
@@ -67,13 +71,23 @@ public class QRCodeServiceImpl implements IQRCodeService {
                     e.printStackTrace();
                 }
                 String code = map.get("该二维码解析的内容为");
-                data = this.parseJSON(this.queryInfoWithCode(code));
+                try {
+                    data = this.parseJSON(this.queryInfoWithCode(code));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 r.put("该二维码解析的内容为",map.get("该二维码解析的内容为"));
+                r.put("该产品二维码为",map.get("该产品二维码为"));
             }
             else if(queryQRCode.getType().equals("2")) {
-                data = this.parseJSON(this.queryInfoWithCode(queryQRCode.getCode()));
+                try {
+                    data = this.parseJSON(this.queryInfoWithCode(queryQRCode.getCode()));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             r.put("data",data);
+            r.put("该产品二维码为",this.interceptURl(queryQRCode.getCode()));
         }
         String urlId = iThisQueryUrlService.insertUrlAndInfo(r.getData(),queryQRCode);
         r.put("urlId",urlId);
@@ -127,9 +141,10 @@ public class QRCodeServiceImpl implements IQRCodeService {
     * @return 返回从蜀云接口查到的信息
     * */
     @Override
-    public JSONObject queryInfoWithCode(String code) {
-        //访问蜀云查询该产品信息的网址
-        String interfaceMsg = HttpClient.queryMsgWithQRCode(code);
+    public JSONObject queryInfoWithCode(String code) throws UnsupportedEncodingException {
+        String uRLCode = URLEncoder.encode(code,"UTF-8");
+        log.info("=================uRLCode:{}=================",uRLCode);
+        String interfaceMsg = HttpClient.queryMsgWithQRCode(uRLCode);
         log.info("interfaceMsg:{}",interfaceMsg);
         JSONObject jsonMsg = JSONObject.parseObject(interfaceMsg);
         return jsonMsg;
@@ -154,6 +169,16 @@ public class QRCodeServiceImpl implements IQRCodeService {
         return innerData;
     }
 
+    /**
+    * 截取识别二维码之后的内容，只保留产品解析内容，该内容可直接做想骂查询
+    * */
+    @Override
+    public String interceptURl(String url) {
+        String goodsNo;
+        goodsNo = (StringUtils.substringAfterLast(url,"/aax5.cn/")).substring(2);
+        log.info("goodsNo:{}",goodsNo);
+        return goodsNo;
+    }
 
 
     @Override

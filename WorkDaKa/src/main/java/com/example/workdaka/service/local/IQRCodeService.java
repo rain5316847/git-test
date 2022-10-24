@@ -16,9 +16,11 @@ public interface IQRCodeService {
 
     Map<String,String> resolveWithURL(String URL) throws UnsupportedEncodingException;
 
-    JSONObject queryInfoWithCode(String code);
+    JSONObject queryInfoWithCode(String code) throws UnsupportedEncodingException;
 
     JSONObject parseJSON(JSONObject json);
+
+    String interceptURl(String url);
 
     R queryMsgWithQRCode(String url) throws UnsupportedEncodingException;
 

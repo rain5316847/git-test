@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com/example/workdaka/mapper/sichuan/TSignMapper">
+<mapper namespace="com.example.workdaka.mapper.sichuan.TSignMapper">
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.example.workdaka.entity.sichuan.TSign">
         <id column="id" property="id" />
@@ -32,17 +32,32 @@
         <result column="address" property="address" />
     </resultMap>
 
-    <select id="queryProductSign" resultType="HashMap" statementType="PREPARED">
+    <select id="getPackingSign" resultType="HashMap" statementType="PREPARED">
         SELECT
-            *
+            a.order_no,
+            a.relation_no,
+            a.node,
+            a.src_partner_id,
+            a.src_partner_no,
+            a.src_partner_name,
+            a.tar_partner_id,
+            a.tar_partner_no,
+            a.tar_partner_name,
+            a.product_amount,
+            a.sign_date,
+            a.gmt_create,
+            b.product_code,
+            b.product_name,
+            b.product_count,
+            b.product_amount
         FROM
-            t_sign
-                JOIN t_sign_detail ON t_sign.order_no = t_sign_detail.order_no
+            t_sign a
+                JOIN t_sign_detail b ON a.order_no = b.order_no
         WHERE
-            MATCH ( epcs ) AGAINST #{packingCode}
-          AND FIND_IN_SET( #{packingCode}, epcs )
+            MATCH ( b.epcs ) AGAINST (#{QRCode})
+          AND FIND_IN_SET( #{QRCode}, b.epcs )
         ORDER BY
-            t_sign.gmt_create ASC;
+            a.gmt_create ASC;
     </select>
 
 </mapper>

@@ -4,8 +4,19 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.workdaka.entity.local.ThisQueryProductInfo;
 import com.example.workdaka.entity.sichuan.TPackingInfo;
 import com.example.workdaka.entity.sichuan.TPackingList;
+import com.example.workdaka.utils.R;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public interface ITPackingListService extends IService<TPackingList> {
+
+    R getCapMsg(String urlId);
+
+    List<HashMap<String, Object>> getPackingSign(String packingCode);
+
+    List<HashMap<String, Object>> getPackingSignWithUrlId(String urlId);
 
     ThisQueryProductInfo queryURLMsg(String urlId);
 
@@ -13,6 +24,12 @@ public interface ITPackingListService extends IService<TPackingList> {
 
     TPackingList getOneTPackingList(String code);
 
-    TPackingInfo getPackingInfo(String urlId);
+    TPackingInfo getPackingInfoWithId(String urlId);
+
+    TPackingInfo getPackingInfoWithUrlId(String dMCode);
+
+    Map<String,Object> getCapScanWithUrlId(String urlId);
+
+    Map<String,Object> getCapScan(String code);
 
 }

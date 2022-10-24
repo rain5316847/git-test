@@ -25,7 +25,7 @@ public class ThisQueryProductInfo {
      * */
     private String productType;
 
-    private String packingCode;
+    private String QRCode;
 
     private String dmCode;
 
@@ -35,26 +35,27 @@ public class ThisQueryProductInfo {
 
     private String time;
 
-    public ThisQueryProductInfo(String queryUrlId,String productType,String packingCode){
+    public ThisQueryProductInfo(String queryUrlId,String productType,String QRCode){
         this.queryUrlId = queryUrlId;
         this.productType = productType;
-        this.packingCode = packingCode;
+        this.QRCode = QRCode;
     }
 
-    public ThisQueryProductInfo(String queryUrlId,String productType,String dmCode,String productCode,String productName){
+    public ThisQueryProductInfo(String queryUrlId,String productType,String QRCode,String dmCode,String productCode,String productName){
         this.queryUrlId = queryUrlId;
         this.productType = productType;
+        this.QRCode = QRCode;
         this.dmCode = dmCode;
         this.productCode = productCode;
         this.productName = productName;
     }
 
-    public static ThisQueryProductInfo create(String queryUrlId,String productType,String packingCode){
-        return new ThisQueryProductInfo(queryUrlId,productType,packingCode);
+    public static ThisQueryProductInfo create(String queryUrlId,String productType,String QRCode){
+        return new ThisQueryProductInfo(queryUrlId,productType,QRCode);
     }
 
-    public static ThisQueryProductInfo create(String queryUrlId,String productType,String dmCode,String productCode,String productName){
-        return new ThisQueryProductInfo(queryUrlId,productType,dmCode,productCode,productName);
+    public static ThisQueryProductInfo create(String queryUrlId,String productType,String QRCode,String dmCode,String productCode,String productName){
+        return new ThisQueryProductInfo(queryUrlId,productType,QRCode,dmCode,productCode,productName);
     }
 
 }
