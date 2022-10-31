@@ -1,14 +1,13 @@
-package com.example.workdaka.service.local.serviceImpl;
+package com.example.fastlocal.service.serviceImpl;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.workdaka.entity.local.QueryQRCode;
-import com.example.workdaka.service.local.IQRCodeService;
-import com.example.workdaka.service.local.IThisQueryUrlService;
-import com.example.workdaka.utils.HttpClient;
-import com.example.workdaka.utils.R;
+import com.example.fastlocal.entity.QueryQRCode;
+import com.example.fastlocal.service.IQRCodeService;
+import com.example.fastlocal.service.IThisQueryUrlService;
+import com.example.fastlocal.utils.HttpClient;
+import com.example.fastlocal.utils.R;
 import com.google.zxing.*;
-
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -116,7 +115,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
         String goodsNo;
 
         try {
-            decode = java.net.URLDecoder.decode(URL, "UTF-8");
+            decode = URLDecoder.decode(URL, "UTF-8");
             log.info("decode:{}",decode);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -125,10 +124,11 @@ public class QRCodeServiceImpl implements IQRCodeService {
         log.info("interceptURL:{}",interceptURL);
         replacement = interceptURL.replaceAll("%25","%");
         log.info("replacement:{}",replacement);
-        secDecode = java.net.URLDecoder.decode(replacement, "UTF-8");
+        secDecode = URLDecoder.decode(replacement, "UTF-8");
         log.info("secDecode:{}",secDecode);
         goodsNo = (StringUtils.substringAfterLast(secDecode,"/aax5.cn/")).substring(2);
         log.info("goodsNo:{}",goodsNo);
+
         result.put("该二维码解析的内容为",secDecode);
         result.put("该产品二维码为",goodsNo);
         return result;
@@ -174,11 +174,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
     @Override
     public String interceptURl(String url) {
         String goodsNo;
-        try {
-            goodsNo = (StringUtils.substringAfterLast(url,"/aax5.cn/")).substring(2);
-        }catch (Exception e){
-            goodsNo = (StringUtils.substringAfterLast(url,"/AAX5.CN/")).substring(2);
-        }
+        goodsNo = (StringUtils.substringAfterLast(url,"/aax5.cn/")).substring(2);
         log.info("goodsNo:{}",goodsNo);
         return goodsNo;
     }
@@ -209,7 +205,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
             return r.error("请输入二维码识别之后的网址信息。");
         }
         try {
-            decode = java.net.URLDecoder.decode(url, "UTF-8");
+            decode = URLDecoder.decode(url, "UTF-8");
             log.info("decode:{}",decode);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -219,7 +215,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
         log.info("interceptURL:{}",interceptURL);
         replacement = interceptURL.replaceAll("%25","%");
         log.info("replacement:{}",replacement);
-        secDecode = java.net.URLDecoder.decode(replacement, "UTF-8");
+        secDecode = URLDecoder.decode(replacement, "UTF-8");
         log.info("secDecode:{}",secDecode);
         goodsNo = (StringUtils.substringAfterLast(secDecode,"/aax5.cn/")).substring(2);
         log.info("goodsNo:{}",goodsNo);
@@ -286,7 +282,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
         //本次查询是否成功
         int success = 1;
 
-        com.google.zxing.Result result;
+        Result result;
 
         File file = new File(URLDecoder.decode(url,"utf-8"));
         MultiFormatReader formatReader = new MultiFormatReader();

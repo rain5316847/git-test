@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 class WorkDaKaApplicationTests {
@@ -81,5 +83,17 @@ class WorkDaKaApplicationTests {
     @Test
     void test9(){
         System.out.println(tSignMapper.getPackingSign("F2VMATYX*FA3P2-.O*+6D"));}
+
+    @Test
+    void test10(){
+        List<String> list1 = new ArrayList<>();
+        List<String> list3 = new ArrayList<>();
+        list1.add("a");
+        list1.add("b");
+        list1.add("3");
+        List<List<String>> list2 = new ArrayList<>();
+        list2.add(list1);
+        System.out.println(list2);
+    }
 }
 
