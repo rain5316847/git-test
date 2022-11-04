@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.workdaka.mapper.sichuan.TPackingListMapper">
+    <!--statementType="PREPARED" + #{}对sql语句进行预处理，防止sql注入-->
+
+    <select id="queryCapMsg" resultType="HashMap" statementType="PREPARED">
+        SELECT
+            *
+        FROM
+            t_packing_list pl,
+            t_packing_info pi,
+            <if test="productCode != null and productCode != ''">
+                b_product bp,
+            </if>
+            t_product tp
+        WHERE
+            pl.`code` = #{dmCode}
+          <if test="productCode != null and productCode != ''">
+              AND bp.product_code = #{productCode}
+          </if>
+          AND pl.packing_info_id = pi.id
+          AND pi.product_id = tp.id;
+    </select>
+
+</mapper>

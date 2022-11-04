@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.workdaka.mapper.sichuan.TSignMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.workdaka.entity.sichuan.TSign">
+        <id column="id" property="id" />
+        <result column="order_no" property="orderNo" />
+        <result column="relation_no" property="relationNo" />
+        <result column="node" property="node" />
+        <result column="src_partner_id" property="srcPartnerId" />
+        <result column="src_partner_no" property="srcPartnerNo" />
+        <result column="src_partner_name" property="srcPartnerName" />
+        <result column="tar_partner_id" property="tarPartnerId" />
+        <result column="tar_partner_no" property="tarPartnerNo" />
+        <result column="tar_partner_name" property="tarPartnerName" />
+        <result column="product_amount" property="productAmount" />
+        <result column="longitude" property="longitude" />
+        <result column="latitude" property="latitude" />
+        <result column="area_first_id" property="areaFirstId" />
+        <result column="area_first_name" property="areaFirstName" />
+        <result column="area_second_id" property="areaSecondId" />
+        <result column="area_second_name" property="areaSecondName" />
+        <result column="area_three_id" property="areaThreeId" />
+        <result column="area_three_name" property="areaThreeName" />
+        <result column="sign_date" property="signDate" />
+        <result column="gmt_scan" property="gmtScan" />
+        <result column="oper_id" property="operId" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_update" property="gmtUpdate" />
+        <result column="up_snow_status" property="upSnowStatus" />
+        <result column="out_partner_no" property="outPartnerNo" />
+        <result column="address" property="address" />
+    </resultMap>
+
+    <select id="getPackingSign" resultType="HashMap" statementType="PREPARED">
+        SELECT
+            a.order_no,
+            a.relation_no,
+            a.node,
+            a.src_partner_id,
+            a.src_partner_no,
+            a.src_partner_name,
+            a.tar_partner_id,
+            a.tar_partner_no,
+            a.tar_partner_name,
+            a.product_amount,
+            a.sign_date,
+            a.gmt_create,
+            b.product_code,
+            b.product_name,
+            b.product_count,
+            b.product_amount
+        FROM
+            t_sign a
+                JOIN t_sign_detail b ON a.order_no = b.order_no
+        WHERE
+            MATCH ( b.epcs ) AGAINST (#{QRCode})
+          AND FIND_IN_SET( #{QRCode}, b.epcs )
+        ORDER BY
+            a.gmt_create ASC;
+    </select>
+
+</mapper>

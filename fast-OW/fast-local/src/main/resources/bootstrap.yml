@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: fast-local
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    nacos:
+        discovery:
+          server-addr: 43.139.79.16:8848
+          namespace: e6d74eaf-4f93-44e1-bf4d-88e3df94a7d0
+        config:
+          server-addr: 43.139.79.16:8848
+          file-extension: yaml
+          namespace: e6d74eaf-4f93-44e1-bf4d-88e3df94a7d0
+          group: DEFAULT_GROUP
+          shared-configs:
+            - data-Id: share-mybatis-plus-dev.yaml
+              group: DEFAULT_GROUP
+          extension-configs:
+            - data-Id: fast-local-mysql-dev.yaml
+              group: DEFAULT_GROUP
+              refresh: true
+
+
+

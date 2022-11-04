@@ -49,16 +49,14 @@ public class LogInController {
     public List<ThisUser> all(String name){
         QueryWrapper<ThisUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("name",name);
-        List<ThisUser> list = userMapper.selectList(queryWrapper);
-        return list;
+        return userMapper.selectList(queryWrapper);
     }
 
     @LoginToken
     @PostMapping("/getMessage")
     public String getMessage(HttpServletRequest httpServletRequest){
         String token = httpServletRequest.getHeader("token");
-        String userId = JWT.decode(token).getAudience().get(0);
-        return userId;
+        return JWT.decode(token).getAudience().get(0);
     }
 
     @GetMapping("/hello")
