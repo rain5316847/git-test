@@ -5,6 +5,7 @@ import com.example.workdaka.mapper.sichuan.TCapScanMapper;
 import com.example.workdaka.mapper.sichuan.TPackingListMapper;
 import com.example.workdaka.mapper.sichuan.TProductMapper;
 import com.example.workdaka.mapper.sichuan.TSignMapper;
+import com.example.workdaka.service.local.IDayOWService;
 import com.example.workdaka.service.local.IQRCodeService;
 import com.example.workdaka.service.local.ITestService;
 import com.example.workdaka.service.local.IUserService;
@@ -46,6 +47,9 @@ class WorkDaKaApplicationTests {
 
     @Autowired
     private TSignMapper tSignMapper;
+
+    @Autowired
+    private IDayOWService iDayOWService;
 
     @Test
     void test1(){
@@ -94,6 +98,11 @@ class WorkDaKaApplicationTests {
         List<List<String>> list2 = new ArrayList<>();
         list2.add(list1);
         System.out.println(list2);
+    }
+
+    @Test
+    void test11(){
+        iDayOWService.testExcel();
     }
 }
 

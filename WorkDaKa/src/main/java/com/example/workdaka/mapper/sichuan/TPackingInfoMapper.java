@@ -20,4 +20,6 @@ public interface TPackingInfoMapper extends BaseMapper<TPackingInfo> {
 
     List<HashMap<String, Object>> getPackingListWithPackingId(@Param("packingId") String packingId);
 
+    HashMap<String,String> getDayExcelInfo(@Param("epc") String epc);
+
 }

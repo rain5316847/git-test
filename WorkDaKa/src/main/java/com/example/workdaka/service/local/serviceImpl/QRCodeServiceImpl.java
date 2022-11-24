@@ -76,6 +76,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                r.put("该产品信息为",data);
                 r.put("该二维码解析的内容为",map.get("该二维码解析的内容为"));
                 r.put("该产品二维码为",map.get("该产品二维码为"));
             }
@@ -85,9 +86,9 @@ public class QRCodeServiceImpl implements IQRCodeService {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                r.put("data",data);
+                r.put("该产品二维码为",this.interceptURl(queryQRCode.getCode()));
             }
-            r.put("data",data);
-            r.put("该产品二维码为",this.interceptURl(queryQRCode.getCode()));
         }
         String urlId = iThisQueryUrlService.insertUrlAndInfo(r.getData(),queryQRCode);
         r.put("urlId",urlId);
@@ -169,7 +170,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
     }
 
     /**
-    * 截取识别二维码之后的内容，只保留产品解析内容，该内容可直接做想骂查询
+    * 截取识别二维码之后的内容，只保留产品解析内容，该内容可直接做箱码查询
     * */
     @Override
     public String interceptURl(String url) {

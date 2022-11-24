@@ -37,10 +37,10 @@ public class QRCodeServiceImpl implements IQRCodeService {
     private IThisQueryUrlService iThisQueryUrlService;
 
     /**
-    * 根据二维码信息查询产品信息
-    *@param queryQRCode 传入的产品类型（1 箱码；2 瓶码；）；传入查询类型（1：网址查询；2：解析内容查询；3：二维码查询；）
-    *@return 返回产品信息
-    * */
+     * 根据二维码信息查询产品信息
+     *@param queryQRCode 传入的产品类型（1 箱码；2 瓶码；）；传入查询类型（1：网址查询；2：解析内容查询；3：二维码查询；）
+     *@return 返回产品信息
+     * */
     @Override
     public R queryMsgWithQRCode(QueryQRCode queryQRCode) {
 
@@ -75,6 +75,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                r.put("该产品信息为",data);
                 r.put("该二维码解析的内容为",map.get("该二维码解析的内容为"));
                 r.put("该产品二维码为",map.get("该产品二维码为"));
             }
@@ -84,9 +85,9 @@ public class QRCodeServiceImpl implements IQRCodeService {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                r.put("data",data);
+                r.put("该产品二维码为",this.interceptURl(queryQRCode.getCode()));
             }
-            r.put("data",data);
-            r.put("该产品二维码为",this.interceptURl(queryQRCode.getCode()));
         }
         String urlId = iThisQueryUrlService.insertUrlAndInfo(r.getData(),queryQRCode);
         r.put("urlId",urlId);
@@ -115,7 +116,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
         String goodsNo;
 
         try {
-            decode = URLDecoder.decode(URL, "UTF-8");
+            decode = java.net.URLDecoder.decode(URL, "UTF-8");
             log.info("decode:{}",decode);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -124,36 +125,34 @@ public class QRCodeServiceImpl implements IQRCodeService {
         log.info("interceptURL:{}",interceptURL);
         replacement = interceptURL.replaceAll("%25","%");
         log.info("replacement:{}",replacement);
-        secDecode = URLDecoder.decode(replacement, "UTF-8");
+        secDecode = java.net.URLDecoder.decode(replacement, "UTF-8");
         log.info("secDecode:{}",secDecode);
         goodsNo = (StringUtils.substringAfterLast(secDecode,"/aax5.cn/")).substring(2);
         log.info("goodsNo:{}",goodsNo);
-
         result.put("该二维码解析的内容为",secDecode);
         result.put("该产品二维码为",goodsNo);
         return result;
     }
 
     /**
-    * 根据“该二维码解析的内容”通过蜀云接口查询产品信息
-    * @param code 二次解码之后的内容
-    * @return 返回从蜀云接口查到的信息
-    * */
+     * 根据“该二维码解析的内容”通过蜀云接口查询产品信息
+     * @param code 二次解码之后的内容
+     * @return 返回从蜀云接口查到的信息
+     * */
     @Override
     public JSONObject queryInfoWithCode(String code) throws UnsupportedEncodingException {
         String uRLCode = URLEncoder.encode(code,"UTF-8");
         log.info("=================uRLCode:{}=================",uRLCode);
         String interfaceMsg = HttpClient.queryMsgWithQRCode(uRLCode);
         log.info("interfaceMsg:{}",interfaceMsg);
-        JSONObject jsonMsg = JSONObject.parseObject(interfaceMsg);
-        return jsonMsg;
+        return JSONObject.parseObject(interfaceMsg);
     }
 
     /**
-    * 解析蜀云接口传过来的json数据
-    * @param json 蜀云接口查询的瓶盖json数据
-    * @return 返回一个解析过的JSONObject格式的纯瓶盖json数据
-    * */
+     * 解析蜀云接口传过来的json数据
+     * @param json 蜀云接口查询的瓶盖json数据
+     * @return 返回一个解析过的JSONObject格式的纯瓶盖json数据
+     * */
     @Override
     public JSONObject parseJSON(JSONObject json) {
 
@@ -163,18 +162,21 @@ public class QRCodeServiceImpl implements IQRCodeService {
 
         String innerDataStr = outerData.getString("data");
         //log.info("================innerDataStr:{}==================",innerDataStr);
-        JSONObject innerData = JSONObject.parseObject(innerDataStr);
 
-        return innerData;
+        return JSONObject.parseObject(innerDataStr);
     }
 
     /**
-    * 截取识别二维码之后的内容，只保留产品解析内容，该内容可直接做想骂查询
-    * */
+     * 截取识别二维码之后的内容，只保留产品解析内容，该内容可直接做箱码查询
+     * */
     @Override
     public String interceptURl(String url) {
         String goodsNo;
-        goodsNo = (StringUtils.substringAfterLast(url,"/aax5.cn/")).substring(2);
+        try {
+            goodsNo = (StringUtils.substringAfterLast(url,"/aax5.cn/")).substring(2);
+        }catch (Exception e){
+            goodsNo = (StringUtils.substringAfterLast(url,"/AAX5.CN/")).substring(2);
+        }
         log.info("goodsNo:{}",goodsNo);
         return goodsNo;
     }
@@ -198,8 +200,6 @@ public class QRCodeServiceImpl implements IQRCodeService {
         String goodsNo;
         //访问蜀云查询该产品信息的网址
         String interfaceMsg = null;
-        //本次查询是否成功
-        int success = 1;
 
         if(url == null || ("").equals(url)){
             return r.error("请输入二维码识别之后的网址信息。");
@@ -224,8 +224,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
             interfaceMsg = HttpClient.queryMsgWithQRCode(secDecode);
         } catch (Exception e) {
             e.printStackTrace();
-            success = 2;
-           // iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,1,r.toString(),success));
+            // iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,1,r.toString(),success));
         }
 
         log.info("interfaceMsg:{}",interfaceMsg);
@@ -248,8 +247,6 @@ public class QRCodeServiceImpl implements IQRCodeService {
         String goodsNo;
         //访问蜀云查询该产品信息的网址
         String interfaceMsg = null;
-        //本次查询是否成功
-        int success = 1;
 
         goodsNo = (StringUtils.substringAfterLast(decode,"/AAX5.CN/")).substring(2);
         log.info("GoodsNo:{}",goodsNo);
@@ -258,7 +255,6 @@ public class QRCodeServiceImpl implements IQRCodeService {
             interfaceMsg = HttpClient.queryMsgWithQRCode(decode);
         } catch (Exception e) {
             e.printStackTrace();
-            success = 2;
            // iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(decode,2,r.toString(),success));
         }
 
@@ -279,8 +275,6 @@ public class QRCodeServiceImpl implements IQRCodeService {
     public R identifyQRCode(String url) throws IOException, NotFoundException {
 
         R r = R.of();
-        //本次查询是否成功
-        int success = 1;
 
         Result result;
 
@@ -305,7 +299,6 @@ public class QRCodeServiceImpl implements IQRCodeService {
             r = this.queryMsgWithoutQRCode(result.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            success = 2;
           //  iThisQueryUrlService.insertQueryUrl(new ThisQueryUrl(url,3,r.toString(),success));
         }
 

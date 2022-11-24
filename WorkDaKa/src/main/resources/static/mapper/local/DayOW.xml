@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.workdaka.mapper.local.DayOWMapper">
+
+    <insert id="insertDayOW"  statementType="PREPARED">
+        INSERT INTO day_ow ( man, order_no, epc, problem, solve )
+        VALUES
+            ( #{man}, #{orderNo}, #{epc}, #{problem}, #{solve}, #{} );
+    </insert>
+
+    <select id="getLastDayOW" resultType="com.example.workdaka.entity.local.excel.DayOW" statementType="PREPARED">
+        SELECT
+            *
+        FROM
+            day_ow
+        ORDER BY
+            end_time DESC
+            LIMIT 1;
+    </select>
+</mapper>
