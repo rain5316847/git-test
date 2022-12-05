@@ -113,11 +113,6 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -227,14 +222,6 @@
             <version>3.3.3</version>
         </dependency>
 
-        <!--<dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-dependencies</artifactId>
-            <version>2021.0.4</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>-->
-
         <!--NaCos配置管理依赖-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -273,12 +260,15 @@
             <version>2.7.5</version>
         </dependency>
 
+
+
     </dependencies>
 
     <modules>
         <module>fast-local</module>
         <module>fast-sichuan</module>
         <module>fast-zhejiang</module>
+        <module>fast-gateway</module>
     </modules>
 
     <build>
