@@ -2,23 +2,38 @@ server:
   port: 8081
 
 spring:
+  profiles:
+    active: public
   application:
-    name: fast-sichuan
-  datasource:
-    url: jdbc:mysql://172.16.57.3:3306/shuyun_stts_sc?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-    username: data_readonly
-    password: DSK%2389&Xk78@123
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    name: fast-zhejiang
   cloud:
     compatibility-verifier:
       enabled: false
     nacos:
         discovery:
           server-addr: 43.139.79.16:8848
+          namespace: e6d74eaf-4f93-44e1-bf4d-88e3df94a7d0
         config:
-          enabled: false
           server-addr: 43.139.79.16:8848
-
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+          file-extension: yaml
+          namespace: e6d74eaf-4f93-44e1-bf4d-88e3df94a7d0
+          group: DEFAULT_GROUP
+          shared-configs:
+            - data-Id: share-mybatis-plus-dev.yaml
+              group: DEFAULT_GROUP
+          extension-configs:
+            - data-Id: fast-zhejiang-mysql-dev.yaml
+              group: DEFAULT_GROUP
+              refresh: true
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 20000
+        readTimeout: 20000
+  httpclient:
+    connection-timeout: 20000
+    connection-timer-repeat: 20000
+    enabled: true
+    max-connections: 200
+    max-connections-per-route: 50

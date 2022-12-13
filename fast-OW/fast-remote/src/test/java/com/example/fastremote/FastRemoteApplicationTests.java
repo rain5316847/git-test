@@ -1,10 +1,10 @@
-package com.example.demo;
+package com.example.fastremote;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class FastRemoteApplicationTests {
 
     @Test
     void contextLoads() {

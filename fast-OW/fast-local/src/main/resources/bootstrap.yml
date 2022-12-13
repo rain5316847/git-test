@@ -5,13 +5,13 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: public
   application:
     name: fast-local
   cloud:
     # springCloud 与 springboot 的兼容性验证
     compatibility-verifier:
-      enabled: false
+      enabled: true
     nacos:
         # 注册中心
         discovery:

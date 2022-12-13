@@ -85,7 +85,7 @@ public class QRCodeServiceImpl implements IQRCodeService {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                r.put("data",data);
+                r.put("该产品信息为",data);
                 r.put("该产品二维码为",this.interceptURl(queryQRCode.getCode()));
             }
         }

@@ -8,7 +8,7 @@ spring:
     name: fast-gateway
   cloud:
     compatibility-verifier:
-      enabled: false
+      enabled: true
     nacos:
       discovery:
         server-addr: 43.139.79.16:8848
@@ -18,15 +18,3 @@ spring:
         file-extension: yaml
         namespace: e6d74eaf-4f93-44e1-bf4d-88e3df94a7d0
         group: DEFAULT_GROUP
-    gateway:
-      httpclient: #全局配置
-        connect-timeout: 10000 #连接超时时长，以毫秒为单位，默认值为45秒。
-        response-timeout: 5s #响应超时时长，以秒为单位，需要加上s，表示秒。
-      discovery:
-        locator:
-          enabled: true # 让gateway可以发现naCos中的微服务
-      routes:
-        - id: fast-local  #路由ID，全局唯一，建议配置服务名。
-          uri: lb://fast-local  #lb 整合负载均衡器ribbon，loadbalancer
-          predicates:
-            - Path=/local/**  # 断言，路径相匹配的进行路由

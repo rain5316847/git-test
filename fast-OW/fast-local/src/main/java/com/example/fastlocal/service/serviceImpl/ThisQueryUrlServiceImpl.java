@@ -44,9 +44,9 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
                     product,
                     (String) data.get("该产品二维码为")
             );
-        }else if(product.equals("2") && data.get("data") != null){
+        }else if(product.equals("2") && data.get("该产品信息为") != null){
 
-            String dataInner = data.get("data").toString();
+            String dataInner = data.get("该产品信息为").toString();
             JSONObject jsonInner = JSONObject.parseObject(dataInner);
             String QRCode = (String) data.get("该产品二维码为");
             String dmCode = jsonInner.getString("dmCode");
