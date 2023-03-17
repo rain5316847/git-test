@@ -1,6 +1,8 @@
 package com.example.fastlocal;
 
+import com.example.fastlocal.service.ITestCodeService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.SpringVersion;
@@ -8,12 +10,12 @@ import org.springframework.core.SpringVersion;
 @SpringBootTest
 class FastLocalApplicationTests {
 
+    @Autowired
+    private ITestCodeService iTestCodeService;
     @Test
-    void contextLoads() {
+    void dmCodeTest() {
 
-            String springVersion = SpringVersion.getVersion();
-            String springBootVersion = SpringBootVersion.getVersion();
-            System.out.println("Spring版本:"+springVersion+"\nSpringBoot版本:"+springBootVersion);
+            iTestCodeService.queryDmCode();
 
     }
 

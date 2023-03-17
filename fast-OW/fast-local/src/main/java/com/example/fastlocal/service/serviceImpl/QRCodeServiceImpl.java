@@ -142,9 +142,9 @@ public class QRCodeServiceImpl implements IQRCodeService {
     @Override
     public JSONObject queryInfoWithCode(String code) throws UnsupportedEncodingException {
         String uRLCode = URLEncoder.encode(code,"UTF-8");
-        log.info("=================uRLCode:{}=================",uRLCode);
+        // log.info("=================uRLCode:{}=================",uRLCode);
         String interfaceMsg = HttpClient.queryMsgWithQRCode(uRLCode);
-        log.info("interfaceMsg:{}",interfaceMsg);
+        // log.info("interfaceMsg:{}",interfaceMsg);
         return JSONObject.parseObject(interfaceMsg);
     }
 

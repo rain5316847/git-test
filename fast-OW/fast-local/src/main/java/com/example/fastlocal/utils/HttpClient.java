@@ -34,7 +34,7 @@ public class HttpClient {
 
         // 创建Get请求
         HttpGet httpGet = new HttpGet("https://opss.568yun.cn/getProductInfoByInnerCode?area=&code=" + url);
-        log.info("httpGet:{}",httpGet);
+        //log.info("httpGet:{}",httpGet);
         // 响应模型
         CloseableHttpResponse response = null;
         String msg = null;

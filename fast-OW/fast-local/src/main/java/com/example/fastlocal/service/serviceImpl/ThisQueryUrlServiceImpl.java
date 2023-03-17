@@ -61,7 +61,7 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
                     productCode,
                     productName
             );
-        }else if(product.equals("2") && data.get("data") == null){
+        }else if(product.equals("2") && data.get("该产品信息为") == null){
             thisQueryProductInfo = ThisQueryProductInfo.create(
                     urlId,
                     product,
