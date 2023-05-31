@@ -1,7 +1,7 @@
 package com.example.fastlocal.utils.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.utils.BoundedInputStream;
+import org.apache.commons.io.input.BoundedInputStream;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -20,10 +20,10 @@ public class MultiReadHttpServletRequestWrapper extends HttpServletRequestWrappe
         super(request);
         body = new StringBuilder();
         try (
-             // 将将request的body转换为字节数组并放在缓存区，在转换为“含有读取界限的输入流，超过这个界限读取将会停止”并放在缓存区（BoundedInputStream），大小为1M
-             InputStream bounded = new BoundedInputStream(request.getInputStream(), MAX_BYTE_SIZE);
-             //将缓存区的字节流转化为字符流，否则不能通过String类型的对象读取
-             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bounded))){
+                // 将将request的body转换为字节数组并放在缓存区，在转换为“含有读取界限的输入流，超过这个界限读取将会停止”并放在缓存区（BoundedInputStream），大小为1M
+                InputStream bounded = new BoundedInputStream(request.getInputStream(), MAX_BYTE_SIZE);
+                //将缓存区的字节流转化为字符流，否则不能通过String类型的对象读取
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bounded))){
                 String line;
                 //读取缓冲区的全部内容
                 while ((line = bufferedReader.readLine()) != null) {

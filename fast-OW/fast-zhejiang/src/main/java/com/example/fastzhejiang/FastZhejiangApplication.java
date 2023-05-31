@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = {"com.example.fastremote.remote"})
+@EnableFeignClients
 public class FastZhejiangApplication {
 
     public static void main(String[] args) {
