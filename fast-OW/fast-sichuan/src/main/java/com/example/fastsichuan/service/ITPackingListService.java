@@ -1,7 +1,7 @@
 package com.example.fastsichuan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.fastsichuan.entity.local.ThisQueryProductInfo;
+import com.example.fastsichuan.entity.ThisQueryProductInfo;
 import com.example.fastsichuan.entity.TPackingInfo;
 import com.example.fastsichuan.entity.TPackingList;
 import com.example.fastsichuan.utils.R;

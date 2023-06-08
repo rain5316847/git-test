@@ -9,6 +9,7 @@ import com.example.fastlocal.mapper.ThisQueryUrlMapper;
 import com.example.fastlocal.service.IThisQueryProductInfoService;
 import com.example.fastlocal.service.IThisQueryUrlService;
 import com.example.fastlocal.utils.UUIDUtil;
+import com.example.fastlocal.utils.redis.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
 
     @Autowired
     private IThisQueryProductInfoService iThisQueryProductInfoService;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Override
     public String insertUrlAndInfo(Map<String,Object> data, QueryQRCode queryQRCode) {
@@ -48,8 +52,15 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
 
             String dataInner = data.get("该产品信息为").toString();
             JSONObject jsonInner = JSONObject.parseObject(dataInner);
+            String extendProperties = jsonInner.getString("extendProperties");
+            JSONObject jsonInnerExtendProperties = JSONObject.parseObject(extendProperties);
             String QRCode = (String) data.get("该产品二维码为");
+            String parent = jsonInner.getString("parent");
+            String productId = jsonInner.getString("productId");
+            String produceTime = jsonInner.getString("produceTime");
             String dmCode = jsonInner.getString("dmCode");
+            String storeCode = jsonInnerExtendProperties.getString("storeCode");
+            String storeName = jsonInnerExtendProperties.getString("storeName");
             String productCode = jsonInner.getString("productCode");
             String productName = jsonInner.getString("productName");
 
@@ -57,7 +68,12 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
                     urlId,
                     product,
                     QRCode,
+                    parent,
+                    productId,
+                    produceTime,
                     dmCode,
+                    storeCode,
+                    storeName,
                     productCode,
                     productName
             );
@@ -68,12 +84,18 @@ public class ThisQueryUrlServiceImpl extends ServiceImpl<ThisQueryUrlMapper, Thi
                     null,
                     null,
                     null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
                     null
             );
-        };
+        }
 
         iThisQueryProductInfoService.insertThisQueryProductInfo(thisQueryProductInfo);
         baseMapper.insert(thisQueryUrl);
+        redisUtils.setQRMsgToRedis(thisQueryProductInfo);
         return urlId;
     }
 

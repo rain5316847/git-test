@@ -8,12 +8,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("this_query_product_info")
-public class ThisQueryProductInfo {
+public class ThisQueryProductInfo implements Serializable {
+
+    private static final long serialVersionUID = -1L;
 
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
@@ -27,7 +31,17 @@ public class ThisQueryProductInfo {
 
     private String QRCode;
 
+    private String parent;
+
+    private String productId;
+
+    private String produceTime;
+
     private String dmCode;
+
+    private String storeCode;
+
+    private String storeName;
 
     private String productCode;
 
@@ -41,11 +55,18 @@ public class ThisQueryProductInfo {
         this.QRCode = QRCode;
     }
 
-    public ThisQueryProductInfo(String queryUrlId,String productType,String QRCode,String dmCode,String productCode,String productName){
+    public ThisQueryProductInfo(String queryUrlId,String productType,String QRCode,String parent,
+                                String productId,String produceTime,String dmCode,String storeCode,String storeName,
+                                String productCode,String productName){
         this.queryUrlId = queryUrlId;
         this.productType = productType;
         this.QRCode = QRCode;
+        this.parent = parent;
+        this.productId = productId;
+        this.produceTime = produceTime;
         this.dmCode = dmCode;
+        this.storeCode = storeCode;
+        this.storeName = storeName;
         this.productCode = productCode;
         this.productName = productName;
     }
@@ -54,8 +75,10 @@ public class ThisQueryProductInfo {
         return new ThisQueryProductInfo(queryUrlId,productType,QRCode);
     }
 
-    public static ThisQueryProductInfo create(String queryUrlId,String productType,String QRCode,String dmCode,String productCode,String productName){
-        return new ThisQueryProductInfo(queryUrlId,productType,QRCode,dmCode,productCode,productName);
+    public static ThisQueryProductInfo create(String queryUrlId,String productType,String QRCode,String parent,
+                                              String productId,String produceTime,String dmCode,String storeCode,String storeName,
+                                              String productCode,String productName){
+        return new ThisQueryProductInfo(queryUrlId,productType,QRCode,parent,productId,produceTime,dmCode, storeCode,storeName,productCode,productName);
     }
 
 }

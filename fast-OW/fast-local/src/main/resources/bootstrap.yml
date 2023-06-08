@@ -30,6 +30,10 @@ spring:
             - data-Id: fast-local-mysql-dev.yaml
               group: DEFAULT_GROUP
               refresh: true
+            - data-Id: redis-config.yaml
+              group: DEFAULT_GROUP
+              refresh: true
+
 
 
 

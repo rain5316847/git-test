@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.workdaka.mapper.sichuan.TPackingListMapper">
+<mapper namespace="com.example.fastsichuan.mapper.TPackingListMapper">
     <!--statementType="PREPARED" + #{}对sql语句进行预处理，防止sql注入-->
 
     <select id="queryCapMsg" resultType="HashMap" statementType="PREPARED">

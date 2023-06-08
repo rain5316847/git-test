@@ -33,4 +33,9 @@ public class QRCodeController {
         return  iqrCodeService.queryMsgWithQRCode(queryQRCode);
     }
 
+    @PostMapping("/getQRMsgWithId")
+    public R getQRMsgWithId(@RequestBody String id){
+        return iqrCodeService.getQRMsgWithId(id);
+    }
+
 }

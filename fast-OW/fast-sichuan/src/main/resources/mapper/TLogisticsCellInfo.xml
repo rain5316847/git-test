@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fastsichuan.mapper.TLogisticsCellInfoMapper">
+
+    <resultMap type="com.example.fastsichuan.entity.TLogisticsCellInfo" id="TLogisticsCellInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="epc" column="epc" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" jdbcType="VARCHAR"/>
+        <result property="codeAmount" column="code_amount" jdbcType="VARCHAR"/>
+        <result property="realAmount" column="real_amount" jdbcType="VARCHAR"/>
+        <result property="surplusAmount" column="surplus_amount" jdbcType="VARCHAR"/>
+        <result property="gmtScan" column="gmt_scan" jdbcType="VARCHAR"/>
+        <result property="batchNo" column="batch_no" jdbcType="VARCHAR"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="productLineId" column="product_line_id" jdbcType="INTEGER"/>
+        <result property="team" column="team" jdbcType="VARCHAR"/>
+        <result property="gmtDate" column="gmt_date" jdbcType="INTEGER"/>
+        <result property="orgId" column="org_id" jdbcType="INTEGER"/>
+        <result property="gmtCreate" column="gmt_create" jdbcType="VARCHAR"/>
+        <result property="gmtUpdate" column="gmt_update" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getInfoA" resultType="com.example.fastsichuan.entity.TLogisticsCellInfo" statementType="PREPARED">
+        SELECT
+            t.id,
+            t.epc,
+            t.product_line_id
+        FROM
+            t_logistics_cell_info t
+        WHERE
+            t.epc LIKE '$TPA%'
+          AND t.gmt_scan >= '2022-01-01 00:00:00.000';
+    </select>
+
+
+</mapper>
+

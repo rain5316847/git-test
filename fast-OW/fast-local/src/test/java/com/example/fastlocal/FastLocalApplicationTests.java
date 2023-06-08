@@ -1,21 +1,25 @@
 package com.example.fastlocal;
 
-import com.example.fastlocal.service.ITestCodeService;
+
+import com.example.fastlocal.utils.redis.RedisUtils;
+import com.example.fastremote.remote.FastTestRemote;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.SpringVersion;
 
 @SpringBootTest
 class FastLocalApplicationTests {
 
     @Autowired
-    private ITestCodeService iTestCodeService;
+    private FastTestRemote fastTestRemote;
+
+    @Autowired
+    private RedisUtils redisUtils;
+
     @Test
     void dmCodeTest() {
 
-            iTestCodeService.queryDmCode();
+        System.out.println(redisUtils.getInfoFromRedis("thisQueryProductInfo:1443d874af190cd06a1f786479c208c3"));
 
     }
 

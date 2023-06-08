@@ -30,4 +30,6 @@ public interface IQRCodeService {
 
     BufferedImage generateQRCode(String msg);
 
+    R getQRMsgWithId(String id);
+
 }

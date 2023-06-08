@@ -1,3 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com/example/workdaka/mapper/sichuan/TSignDetail"></mapper>
+<mapper namespace="com.example.fastsichuan.mapper.TSignDetailMapper">
+
+    <select id="getPackingSignDetail" resultType="com.example.fastsichuan.entity.TSignDetail" statementType="PREPARED">
+        SELECT
+            b.*
+        FROM
+            t_sign a
+                JOIN t_sign_detail b ON a.order_no = b.order_no
+        WHERE
+            MATCH ( b.epcs ) AGAINST (#{epc})
+          AND FIND_IN_SET( #{epc}, b.epcs )
+          AND a.node not in ('F1','F2')
+        ORDER BY
+            a.gmt_create ASC;
+    </select>
+
+    <update id="updateTSignDetail" parameterType="com.example.fastsichuan.entity.TSignDetail">
+        UPDATE t_sign_detail a
+        SET a.epcs = #{epcs}
+        WHERE
+            a.id = #{id}
+    </update>
+
+</mapper>
+

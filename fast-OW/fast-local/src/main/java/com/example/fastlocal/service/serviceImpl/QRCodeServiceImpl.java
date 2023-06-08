@@ -3,10 +3,13 @@ package com.example.fastlocal.service.serviceImpl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.fastlocal.entity.QueryQRCode;
+import com.example.fastlocal.entity.ThisQueryProductInfo;
+import com.example.fastlocal.mapper.ThisQueryProductInfoMapper;
 import com.example.fastlocal.service.IQRCodeService;
 import com.example.fastlocal.service.IThisQueryUrlService;
 import com.example.fastlocal.utils.HttpClient;
 import com.example.fastlocal.utils.R;
+import com.example.fastlocal.utils.common.EmptyUtils;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
@@ -35,6 +38,9 @@ public class QRCodeServiceImpl implements IQRCodeService {
 
     @Autowired
     private IThisQueryUrlService iThisQueryUrlService;
+
+    @Autowired
+    private ThisQueryProductInfoMapper thisQueryProductInfoMapper;
 
     /**
      * 根据二维码信息查询产品信息
@@ -334,6 +340,19 @@ public class QRCodeServiceImpl implements IQRCodeService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public R getQRMsgWithId(String id) {
+        EmptyUtils.emptyMsg(id,"id不可为空");
+        R r = R.of();
+        ThisQueryProductInfo thisQueryProductInfo = thisQueryProductInfoMapper.getInfoMsg(id);
+        if(thisQueryProductInfo != null){
+            r.put("ThisQueryProductInfo",thisQueryProductInfo);
+        }else {
+            r.error();
+        }
+        return r;
     }
 
 }
